@@ -13,40 +13,24 @@ public class Min_Max {
             array[i] = scanner.nextInt();
         }
 
-        Pair minMax = findMinMax(array);
-
-        System.out.println("Minimum element: " + minMax.min);
-        System.out.println("Maximum element: " + minMax.max);
+        findMinMax(array, 0, size - 1);
 
         scanner.close();
     }
 
-    public static Pair findMinMax(int[] arr) {
-        if (arr.length == 0) {
-            return new Pair(-1, -1); 
-        }
-
-        int min = arr[0];
-        int max = arr[0];
-
-        for (int i = 1; i < arr.length; i++) {
-            if (arr[i] < min) {
-                min = arr[i];
-            } else if (arr[i] > max) {
-                max = arr[i];
-            }
-        }
-
-        return new Pair(min, max);
-    }
-
-    static class Pair {
-        int min;
-        int max;
-
-        public Pair(int min, int max) {
-            this.min = min;
-            this.max = max;
+    public static void findMinMax(int[] arr, int left, int right) {
+        if (left == right) {
+            System.out.println("Minimum element: " + arr[left]);
+            System.out.println("Maximum element: " + arr[left]);
+        } else if (right - left == 1) {
+            int min = Math.min(arr[left], arr[right]);
+            int max = Math.max(arr[left], arr[right]);
+            System.out.println("Minimum element: " + min);
+            System.out.println("Maximum element: " + max);
+        } else {
+            int mid = left + (right - left) / 2;
+            findMinMax(arr, left, mid);
+            findMinMax(arr, mid + 1, right);
         }
     }
 }
