@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Min_Max {
+public class Min_Max{
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -13,24 +13,42 @@ public class Min_Max {
             array[i] = scanner.nextInt();
         }
 
-        findMinMax(array, 0, size - 1);
+        Pair minMax = findMinMax(array, 0, size - 1);
+
+        System.out.println("Minimum element: " + minMax.min);
+        System.out.println("Maximum element: " + minMax.max);
 
         scanner.close();
     }
 
-    public static void findMinMax(int[] arr, int left, int right) {
+    public static Pair findMinMax(int[] arr, int left, int right) {
         if (left == right) {
-            System.out.println("Minimum element: " + arr[left]);
-            System.out.println("Maximum element: " + arr[left]);
+            // Base case: Single element in the array
+            return new Pair(arr[left], arr[left]);
         } else if (right - left == 1) {
-            int min = Math.min(arr[left], arr[right]);
-            int max = Math.max(arr[left], arr[right]);
-            System.out.println("Minimum element: " + min);
-            System.out.println("Maximum element: " + max);
+            // Base case: Two elements in the array
+            return new Pair(Math.min(arr[left], arr[right]), Math.max(arr[left], arr[right]));
         } else {
+            // Recursive case: Divide the array and find min/max in each half
             int mid = left + (right - left) / 2;
-            findMinMax(arr, left, mid);
-            findMinMax(arr, mid + 1, right);
+            Pair leftPair = findMinMax(arr, left, mid);
+            Pair rightPair = findMinMax(arr, mid + 1, right);
+
+            // Combine results
+            int overallMin = Math.min(leftPair.min, rightPair.min);
+            int overallMax = Math.max(leftPair.max, rightPair.max);
+
+            return new Pair(overallMin, overallMax);
+        }
+    }
+
+    static class Pair {
+        int min;
+        int max;
+
+        public Pair(int min, int max) {
+            this.min = min;
+            this.max = max;
         }
     }
 }
